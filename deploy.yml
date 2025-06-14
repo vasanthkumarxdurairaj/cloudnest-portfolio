@@ -1,0 +1,23 @@
+name: Deploy Website to EC2 via CodeDeploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to EC2 with CodeDeploy
+        uses: webfactory/create-aws-codedeploy-deployment@v1
+        with:
+          application-name: cloudnest-cicd-app
+          deployment-group: cloudnest-deployment-group
+          deployment-config-name: CodeDeployDefault.AllAtOnce
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          region: ap-south-1  # or your EC2 region
